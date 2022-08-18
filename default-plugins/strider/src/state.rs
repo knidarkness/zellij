@@ -50,13 +50,15 @@ impl State {
 pub enum FsEntry {
     Dir(PathBuf, usize),
     File(PathBuf, u64),
+    // DisplayDir(PathBuf)
 }
 
 impl FsEntry {
     pub fn name(&self) -> String {
         let path = match self {
             FsEntry::Dir(p, _) => p,
-            FsEntry::File(p, _) => p,
+            FsEntry::File(p, _) => p
+            // FsEntry::DisplayDir(p) => p,
         };
         path.file_name().unwrap().to_string_lossy().into_owned()
     }
@@ -65,6 +67,7 @@ impl FsEntry {
         let info = match self {
             FsEntry::Dir(_, s) => s.to_string(),
             FsEntry::File(_, s) => pb::convert(*s as f64),
+            // FsEntry::DisplayDir(p) => p.to_string_lossy().into_owned(),
         };
         let space = width.saturating_sub(info.len());
         let name = self.name();
